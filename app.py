@@ -14,9 +14,13 @@ CORS(app, resources={r"/*": {"origins": [
 ]}})
 
 # データベース設定
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")  # 環境変数から取得
+if not os.getenv("DATABASE_URL"):
+    raise RuntimeError("環境変数 'DATABASE_URL' が設定されていません。")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://")  # SQLAlchemyに適した形式に変換
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 # GPTのAPIキー設定
 openai.api_key = os.getenv("OPENAI_API_KEY")

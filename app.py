@@ -7,14 +7,14 @@ import openai
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-# 環境変数の読み込み
-load_dotenv()
-
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": [
+    "https://tech0-gen-8-step3-app-node-15.azurewebsites.net",  # Next.jsドメイン
+    "*",  # Streamlitなど後から修正可能に
+]}})
 
 # データベース設定
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")  # 環境変数から取得
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -278,4 +278,4 @@ def generate_suggestion():
         print("エラーが発生しました")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)

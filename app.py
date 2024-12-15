@@ -100,7 +100,7 @@ def register_deal():
         db.session.add(candidate)
 
     # URLリンクを生成
-    unique_link = f"http://localhost:3000/customer/select_date/{deal_id}"  # Next.jsのURLに変更
+    unique_link =  f"https://tech0-gen-8-step3-app-node-15.azurewebsites.net/customer/select_date/{deal_id}"  # Next.jsのURLに変更
     expires_at = datetime.utcnow() + timedelta(days=30)
 
     # データベースにリンク情報を保存

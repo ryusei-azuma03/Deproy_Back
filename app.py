@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": [
     "https://tech0-gen-8-step3-app-node-15.azurewebsites.net",  # Next.jsドメイン
-    "*",  # Streamlitなど後から修正可能に
+    "https://dep-stream-ltyeegypdaxplbm3sajp8q.streamlit.app",  # Streamlitなど後から修正可能に
 ]}})
 
 # データベース設定

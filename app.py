@@ -17,7 +17,7 @@ CORS(app, resources={r"/*": {"origins": [
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("環境変数 'DATABASE_URL' が設定されていません。")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://")  # SQLAlchemyに適した形式に変換
+app.config['SQLALCHEMY_DATABASE_URL'] = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://")  # SQLAlchemyに適した形式に変換
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 

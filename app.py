@@ -17,7 +17,7 @@ CORS(app, resources={r"/*": {"origins": [
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("環境変数 'DATABASE_URL' が設定されていません。")
 
-app.config['SQLALCHEMY_DATABASE_URL'] = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://")  # SQLAlchemyに適した形式に変換
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://") # SQLAlchemyに適した形式に変換
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -198,6 +198,28 @@ def get_survey_items():
     items = [{'id': item.id, 'question': item.question} for item in survey_items]
     print(items)
     return jsonify(items)
+
+#アンケート２の保存
+@app.route('/api/save_response', methods=['POST'])
+def save_response():
+    data = request.json
+    deal_id = data.get('deal_id')
+    survey2_selected_items = data.get('survey2_selected_items')
+
+    if not deal_id or not survey2_selected_items:
+        return jsonify({'error': 'deal_idとsurvey2_selected_itemsが必要です'}), 400
+
+    # 既存のCustomerResponseレコードを取得または新規作成
+    response = CustomerResponse.query.filter_by(deal_id=deal_id).first()
+    if not response:
+        response = CustomerResponse(deal_id=deal_id)
+
+    # survey2_selected_itemsを保存
+    response.survey2_selected_items = ', '.join(survey2_selected_items)
+    db.session.add(response)
+    db.session.commit()
+
+    return jsonify({'message': '回答が保存されました'})
 
 #顧客管理画面
 @app.route('/admin/manage_deals', methods=['GET'])

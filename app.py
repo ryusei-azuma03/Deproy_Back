@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()  # .envファイルを読み込む
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
@@ -5,7 +7,6 @@ import uuid
 import os
 import openai
 from flask_cors import CORS
-from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": [
@@ -17,8 +18,7 @@ CORS(app, resources={r"/*": {"origins": [
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("環境変数 'DATABASE_URL' が設定されていません。")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://") # SQLAlchemyに適した形式に変換
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")  # MySQL接続文字列をそのまま使用
 db = SQLAlchemy(app)
 
 

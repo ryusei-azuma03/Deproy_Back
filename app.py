@@ -11,7 +11,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": [
     "https://tech0-gen-8-step3-app-node-15.azurewebsites.net",  # Next.jsドメイン
-    "https://dep-stream-ltyeegypdaxplbm3sajp8q.streamlit.app",  # Streamlitなど後から修正可能に
+    "https://app-zra3unagd2snfsqmd2o2qd.streamlit.app/",  # Streamlitなど後から修正可能に
 ]}})
 
 # データベース設定
